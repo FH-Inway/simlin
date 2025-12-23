@@ -18,7 +18,7 @@
                 <outflow>outflow</outflow>
             </stock>
             <flow name="inflow">
-                <eqn>IF bath_tub &lt;= 50 THEN 1 ELSE 0</eqn>
+                <eqn>IF TIME &gt;= 40 THEN 1 ELSE 0</eqn>
             </flow>
             <flow name="outflow">
                 <eqn>1</eqn>
@@ -27,10 +27,10 @@
         <views>
             <view isee:show_pages="false" page_width="800" page_height="600" view_type="stock_flow">
                 <stock name="Bath tub" x="606" y="430.75" label_side="bottom"></stock>
-                <flow name="inflow" x="546.5" y="428" label_side="bottom">
+                <flow name="inflow" x="546.5" y="427.79999999999995" label_side="bottom">
                     <pts>
-                        <pt x="487" y="428"></pt>
-                        <pt x="583.5" y="428"></pt>
+                        <pt x="487" y="427.79999999999995"></pt>
+                        <pt x="583.5" y="427.79999999999995"></pt>
                     </pts>
                 </flow>
                 <flow name="outflow" x="689.25" y="431" label_side="bottom">
