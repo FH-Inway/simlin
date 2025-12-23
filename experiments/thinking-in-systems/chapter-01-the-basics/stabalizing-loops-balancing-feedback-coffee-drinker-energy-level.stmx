@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE" xmlns:simlin="https://simlin.com/XMILE/v1.0">
+    <header>
+        <name>stabalizing-loops-balancing-feedback-coffee-drinker-energy-level</name>
+        <vendor>Simlin</vendor>
+        <product version="0.1.0" lang="en">Simlin</product>
+    </header>
+    <sim_specs method="euler">
+        <start>0</start>
+        <stop>60</stop>
+        <dt>1</dt>
+    </sim_specs>
+    <model>
+        <variables>
+            <stock name="stored_energy_in_body">
+                <eqn>50</eqn>
+                <outflow>metabolic_mobilization_of_energy</outflow>
+            </stock>
+            <stock name="energy_available_for_work">
+                <eqn>0</eqn>
+                <inflow>metabolic_mobilization_of_energy</inflow>
+                <outflow>energy_expenditure</outflow>
+            </stock>
+            <flow name="metabolic_mobilization_of_energy">
+                <eqn>MIN(&quot;Coffee intake&quot;,&quot;Stored energy in body&quot;)</eqn>
+            </flow>
+            <aux name="discrepancy">
+                <eqn>&quot;desired energy level&quot; - &quot;Energy available for work&quot;</eqn>
+            </aux>
+            <aux name="desired_energy_level">
+                <eqn>10</eqn>
+            </aux>
+            <aux name="coffee_intake">
+                <eqn>IF discrepancy &gt; 0 THEN 5 ELSE 0</eqn>
+            </aux>
+            <flow name="energy_expenditure">
+                <eqn>MIN(1,&quot;Energy available for work&quot;)</eqn>
+            </flow>
+        </variables>
+        <views>
+            <view isee:show_pages="false" page_width="800" page_height="600" view_type="stock_flow">
+                <stock name="Stored energy in body" x="405" y="508.5" label_side="bottom"></stock>
+                <stock name="Energy available for work" x="815.5" y="508.25" label_side="bottom"></stock>
+                <flow name="metabolic mobilization of energy" x="610.5" y="508.5" label_side="bottom">
+                    <pts>
+                        <pt x="427.5" y="508.5"></pt>
+                        <pt x="793" y="508.5"></pt>
+                    </pts>
+                </flow>
+                <aux name="discrepancy" x="766" y="621" label_side="right"></aux>
+                <aux name="desired energy level" x="810" y="672" label_side="right"></aux>
+                <connector angle="-81.807914941185">
+                    <from>Energy available for work</from>
+                    <to>discrepancy</to>
+                </connector>
+                <connector angle="170.46592755945915">
+                    <from>desired energy level</from>
+                    <to>discrepancy</to>
+                </connector>
+                <aux name="Coffee intake" x="595" y="612.25" label_side="right"></aux>
+                <connector angle="-143.89312443355763">
+                    <from>discrepancy</from>
+                    <to>Coffee intake</to>
+                </connector>
+                <connector angle="127.30992284402458">
+                    <from>Coffee intake</from>
+                    <to>metabolic mobilization of energy</to>
+                </connector>
+                <flow name="energy expenditure" x="959.6136363636363" y="507.5" label_side="bottom">
+                    <pts>
+                        <pt x="838" y="507.5"></pt>
+                        <pt x="1103.7272727272725" y="507.5"></pt>
+                    </pts>
+                </flow>
+            </view>
+        </views>
+    </model>
+</xmile>

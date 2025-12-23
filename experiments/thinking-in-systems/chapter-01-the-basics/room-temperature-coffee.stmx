@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE" xmlns:simlin="https://simlin.com/XMILE/v1.0">
+    <header>
+        <name>room-temperature-coffee</name>
+        <vendor>Simlin</vendor>
+        <product version="0.1.0" lang="en">Simlin</product>
+    </header>
+    <sim_specs method="euler">
+        <start>0</start>
+        <stop>40</stop>
+        <dt>0.5</dt>
+    </sim_specs>
+    <model>
+        <variables>
+            <stock name="coffee_temperature">
+                <eqn>80</eqn>
+                <inflow>heating</inflow>
+                <outflow>cooling</outflow>
+            </stock>
+            <flow name="cooling">
+                <eqn>IF discrepancy &lt;= 0 THEN 0 ELSE discrepancy*0.1</eqn>
+            </flow>
+            <flow name="heating">
+                <eqn>IF discrepancy &lt; 0 THEN ABS(discrepancy)*0.1 ELSE 0</eqn>
+            </flow>
+            <aux name="room_temperature">
+                <eqn>22</eqn>
+            </aux>
+            <aux name="discrepancy">
+                <eqn>&quot;Coffee temperature&quot;-&quot;Room temperature&quot;</eqn>
+            </aux>
+            <aux name="unused">
+                <eqn>10</eqn>
+            </aux>
+        </variables>
+        <views>
+            <view isee:show_pages="false" page_width="800" page_height="600" view_type="stock_flow">
+                <stock name="Coffee temperature" x="645.6666666666664" y="452" label_side="bottom"></stock>
+                <flow name="cooling" x="762.0731978096935" y="452" label_side="bottom">
+                    <pts>
+                        <pt x="668.1666666666664" y="452"></pt>
+                        <pt x="874.5" y="452"></pt>
+                    </pts>
+                </flow>
+                <flow name="heating" x="505.08214072748956" y="447.49999999999994" label_side="bottom">
+                    <pts>
+                        <pt x="365.5" y="447.49999999999994"></pt>
+                        <pt x="623.1666666666664" y="447.49999999999994"></pt>
+                    </pts>
+                </flow>
+                <aux name="Room temperature" x="635" y="610.5" label_side="right"></aux>
+                <aux name="discrepancy" x="636.5" y="547.8333333333334" label_side="right"></aux>
+                <connector angle="132.47845723578624">
+                    <from>Room temperature</from>
+                    <to>discrepancy</to>
+                </connector>
+                <connector angle="-60.40023275666488">
+                    <from>Coffee temperature</from>
+                    <to>discrepancy</to>
+                </connector>
+                <connector angle="-176.43250140651205">
+                    <from>discrepancy</from>
+                    <to>heating</to>
+                </connector>
+                <connector angle="-34.3433234002606">
+                    <from>discrepancy</from>
+                    <to>cooling</to>
+                </connector>
+                <aux name="unused" x="652.6666666666666" y="144.50000000000003" label_side="right"></aux>
+            </view>
+        </views>
+    </model>
+</xmile>

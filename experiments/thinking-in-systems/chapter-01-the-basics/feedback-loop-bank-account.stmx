@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE" xmlns:simlin="https://simlin.com/XMILE/v1.0">
+    <header>
+        <name>feedback-loop-bank-account</name>
+        <vendor>Simlin</vendor>
+        <product version="0.1.0" lang="en">Simlin</product>
+    </header>
+    <sim_specs method="euler">
+        <start>0</start>
+        <stop>100</stop>
+        <dt>1</dt>
+    </sim_specs>
+    <model>
+        <variables>
+            <stock name="bank_account">
+                <eqn>100</eqn>
+                <inflow>interest</inflow>
+            </stock>
+            <flow name="interest">
+                <eqn>&quot;Bank account&quot;*0.02</eqn>
+            </flow>
+        </variables>
+        <views>
+            <view isee:show_pages="false" page_width="800" page_height="600" view_type="stock_flow">
+                <stock name="Bank account" x="609.4" y="439" label_side="bottom"></stock>
+                <flow name="interest" x="542.4514869888476" y="438" label_side="bottom">
+                    <pts>
+                        <pt x="474.5" y="438"></pt>
+                        <pt x="586.9" y="438"></pt>
+                    </pts>
+                </flow>
+                <connector angle="67.87368898554934">
+                    <from>Bank account</from>
+                    <to>interest</to>
+                </connector>
+            </view>
+        </views>
+    </model>
+</xmile>
