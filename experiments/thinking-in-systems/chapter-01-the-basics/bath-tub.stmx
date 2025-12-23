@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE" xmlns:simlin="https://simlin.com/XMILE/v1.0">
+    <header>
+        <name>bath-tub</name>
+        <vendor>Simlin</vendor>
+        <product version="0.1.0" lang="en">Simlin</product>
+    </header>
+    <sim_specs method="euler">
+        <start>0</start>
+        <stop>100</stop>
+        <dt>1</dt>
+    </sim_specs>
+    <model>
+        <variables>
+            <stock name="bath_tub">
+                <eqn>100</eqn>
+                <inflow>inflow</inflow>
+                <outflow>outflow</outflow>
+            </stock>
+            <flow name="inflow">
+                <eqn>0</eqn>
+            </flow>
+            <flow name="outflow">
+                <eqn>10</eqn>
+            </flow>
+        </variables>
+        <views>
+            <view isee:show_pages="false" page_width="800" page_height="600" view_type="stock_flow">
+                <stock name="Bath tub" x="606" y="430.75" label_side="bottom"></stock>
+                <flow name="inflow" x="546.5" y="428" label_side="bottom">
+                    <pts>
+                        <pt x="487" y="428"></pt>
+                        <pt x="583.5" y="428"></pt>
+                    </pts>
+                </flow>
+                <flow name="outflow" x="689.25" y="431" label_side="bottom">
+                    <pts>
+                        <pt x="628.5" y="431"></pt>
+                        <pt x="772.5" y="431"></pt>
+                    </pts>
+                </flow>
+            </view>
+        </views>
+    </model>
+</xmile>
