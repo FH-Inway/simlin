@@ -18,10 +18,10 @@
                 <outflow>outflow</outflow>
             </stock>
             <flow name="inflow">
-                <eqn>0</eqn>
+                <eqn>IF bath_tub &lt;= 50 THEN 1 ELSE 0</eqn>
             </flow>
             <flow name="outflow">
-                <eqn>10</eqn>
+                <eqn>1</eqn>
             </flow>
         </variables>
         <views>
