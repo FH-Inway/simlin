@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE" xmlns:simlin="https://simlin.com/XMILE/v1.0">
+    <header>
+        <name>thermostat</name>
+        <vendor>Simlin</vendor>
+        <product version="0.1.0" lang="en">Simlin</product>
+    </header>
+    <sim_specs method="euler">
+        <start>0</start>
+        <stop>24</stop>
+        <dt>0.5</dt>
+    </sim_specs>
+    <model>
+        <variables>
+            <stock name="room_temperature">
+                <eqn>10</eqn>
+                <inflow>heat_from_furnace</inflow>
+                <outflow>heat_to_outside</outflow>
+            </stock>
+            <flow name="heat_to_outside">
+                <eqn>&quot;discrepancy between inside and outside temperatures&quot; * 0.1</eqn>
+            </flow>
+            <flow name="heat_from_furnace">
+                <eqn>MIN(&quot;discrepancy between desired and actual room temperatures&quot;, 5)</eqn>
+                <doc>IF &quot;discrepancy between desired and actual room temperatures&quot; &gt; 0 THEN 0 ELSE 0</doc>
+            </flow>
+            <aux name="outside_temperature">
+                <eqn>TIME</eqn>
+                <gf>
+                    <xscale min="0" max="24">
+                    </xscale>
+                    <yscale min="-10" max="15">
+                    </yscale>
+                    <ypts>10.673076923076923,10.576923076923075,9.903846153846155,9.038461538461538,7.403846153846153,4.615384615384614,1.9230769230769225,-1.3461538461538458,-4.519230769230769,-5.48076923076923,-6.057692307692308,-6.25,-6.153846153846153,-5.76923076923077,-5.000000000000001,-3.75,-1.3461538461538458,0.9615384615384617,2.7884615384615383,4.903846153846153,6.8269230769230775,8.75,10.48076923076923,10.48076923076923</ypts>
+                </gf>
+            </aux>
+            <aux name="thermostat_setting">
+                <eqn>18</eqn>
+            </aux>
+            <aux name="discrepancy_between_desired_and_actual_room_temperatures">
+                <eqn>MAX(&quot;thermostat setting&quot; - &quot;Room temperature&quot;, 0)</eqn>
+            </aux>
+            <aux name="discrepancy_between_inside_and_outside_temperatures">
+                <eqn>&quot;Room temperature&quot; - &quot;outside temperature&quot;</eqn>
+            </aux>
+        </variables>
+        <views>
+            <view isee:show_pages="false" page_width="800" page_height="600" view_type="stock_flow">
+                <stock name="Room temperature" x="639" y="361.5" label_side="bottom"></stock>
+                <flow name="heat to outside" x="763.5" y="364.5" label_side="bottom">
+                    <pts>
+                        <pt x="661.5" y="364.5"></pt>
+                        <pt x="888" y="364.5"></pt>
+                    </pts>
+                </flow>
+                <flow name="heat from furnace" x="518" y="369" label_side="bottom">
+                    <pts>
+                        <pt x="397" y="369"></pt>
+                        <pt x="616.5" y="369"></pt>
+                    </pts>
+                </flow>
+                <aux name="outside temperature" x="867.5" y="423.5" label_side="right"></aux>
+                <aux name="thermostat setting" x="359.5" y="459.5" label_side="right"></aux>
+                <aux name="discrepancy between desired and actual room temperatures" x="508.5" y="520.5" label_side="right"></aux>
+                <connector angle="-115.66723987290297">
+                    <from>Room temperature</from>
+                    <to>discrepancy between desired and actual room temperatures</to>
+                </connector>
+                <connector angle="130.59415734363134">
+                    <from>discrepancy between desired and actual room temperatures</from>
+                    <to>heat from furnace</to>
+                </connector>
+                <connector angle="-48.53615970981144">
+                    <from>thermostat setting</from>
+                    <to>discrepancy between desired and actual room temperatures</to>
+                </connector>
+                <aux name="discrepancy between inside and outside temperatures" x="717.5" y="476.5" label_side="right"></aux>
+                <connector angle="41.86544595813308">
+                    <from>discrepancy between inside and outside temperatures</from>
+                    <to>heat to outside</to>
+                </connector>
+                <connector angle="-75.07032050110934">
+                    <from>Room temperature</from>
+                    <to>discrepancy between inside and outside temperatures</to>
+                </connector>
+                <connector angle="-167.20370172209311">
+                    <from>outside temperature</from>
+                    <to>discrepancy between inside and outside temperatures</to>
+                </connector>
+            </view>
+        </views>
+    </model>
+</xmile>
