@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE" xmlns:simlin="https://simlin.com/XMILE/v1.0">
+    <header>
+        <name>capital-output-investment</name>
+        <vendor>Simlin</vendor>
+        <product version="0.1.0" lang="en">Simlin</product>
+    </header>
+    <sim_specs method="euler">
+        <start>0</start>
+        <stop>100</stop>
+        <dt>1</dt>
+    </sim_specs>
+    <model>
+        <variables>
+            <stock name="capital">
+                <eqn>100</eqn>
+                <inflow>investment</inflow>
+            </stock>
+            <flow name="investment">
+                <eqn>output * &quot;fraction of output invested&quot;</eqn>
+            </flow>
+            <aux name="output">
+                <eqn>capital</eqn>
+            </aux>
+            <aux name="fraction_of_output_invested">
+                <eqn>0.02</eqn>
+            </aux>
+        </variables>
+        <views>
+            <view isee:show_pages="false" page_width="800" page_height="600" view_type="stock_flow">
+                <stock name="capital" x="653.5" y="417.5" label_side="bottom"></stock>
+                <flow name="investment" x="562.5" y="421" label_side="bottom">
+                    <pts>
+                        <pt x="471.5" y="421"></pt>
+                        <pt x="631" y="421"></pt>
+                    </pts>
+                </flow>
+                <aux name="output" x="620" y="499.5" label_side="right"></aux>
+                <aux name="fraction of output invested" x="394.5" y="479.5" label_side="right"></aux>
+                <connector angle="-79.64861884140112">
+                    <from>capital</from>
+                    <to>output</to>
+                </connector>
+                <connector angle="165.07867038995028">
+                    <from>output</from>
+                    <to>investment</to>
+                </connector>
+                <connector angle="13.753712723212345">
+                    <from>fraction of output invested</from>
+                    <to>investment</to>
+                </connector>
+            </view>
+        </views>
+    </model>
+</xmile>
