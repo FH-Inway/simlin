@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE" xmlns:simlin="https://simlin.com/XMILE/v1.0">
+    <header>
+        <name>oil-economy</name>
+        <vendor>Simlin</vendor>
+        <product version="0.1.0" lang="en">Simlin</product>
+    </header>
+    <sim_specs method="euler">
+        <start>0</start>
+        <stop>100</stop>
+        <dt>1</dt>
+    </sim_specs>
+    <model>
+        <variables>
+            <stock name="capital">
+                <eqn>5</eqn>
+                <inflow>investment</inflow>
+                <outflow>depreciation</outflow>
+            </stock>
+            <stock name="resource">
+                <eqn>1000</eqn>
+                <outflow>extraction</outflow>
+            </stock>
+            <flow name="extraction">
+                <eqn>capital * yield_per_unit_capital</eqn>
+            </flow>
+            <flow name="investment">
+                <eqn>MIN(growth_goal, profit)</eqn>
+            </flow>
+            <flow name="depreciation">
+                <eqn>capital * 1 / capital_lifetime</eqn>
+            </flow>
+            <aux name="capital_lifetime">
+                <eqn>20</eqn>
+            </aux>
+            <aux name="profit">
+                <eqn>extraction * price - capital * 0.1</eqn>
+            </aux>
+            <aux name="yield_per_unit_capital">
+                <eqn>resource * 0.001</eqn>
+            </aux>
+            <aux name="growth_goal">
+                <eqn>capital * 0.1</eqn>
+            </aux>
+            <aux name="price">
+                <eqn>MIN(1.2/yield_per_unit_capital, 10)</eqn>
+                <doc>MIN(1.2/yield_per_unit_capital, 10)</doc>
+            </aux>
+        </variables>
+        <views>
+            <view isee:show_pages="false" page_width="800" page_height="600" view_type="stock_flow">
+                <stock name="capital" x="670.5999999999999" y="356.5" label_side="bottom"></stock>
+                <stock name="resource" x="487.7" y="628" label_side="bottom"></stock>
+                <flow name="extraction" x="565.8499999999999" y="629.6" label_side="bottom">
+                    <pts>
+                        <pt x="510.2" y="629.6"></pt>
+                        <pt x="644" y="629.6"></pt>
+                    </pts>
+                </flow>
+                <flow name="investment" x="584.8" y="356.5" label_side="bottom">
+                    <pts>
+                        <pt x="499" y="356.5"></pt>
+                        <pt x="648.0999999999999" y="356.5"></pt>
+                    </pts>
+                </flow>
+                <flow name="depreciation" x="745.55" y="356.5" label_side="bottom">
+                    <pts>
+                        <pt x="693.0999999999999" y="356.5"></pt>
+                        <pt x="820.5" y="356.5"></pt>
+                    </pts>
+                </flow>
+                <aux name="capital lifetime" x="804.5" y="434.5" label_side="right"></aux>
+                <aux name="profit" x="594.5" y="441.5" label_side="right"></aux>
+                <aux name="yield per unit capital" x="514" y="568" label_side="right"></aux>
+                <aux name="growth goal" x="645.5" y="296" label_side="right"></aux>
+                <connector angle="86.66837650469256">
+                    <from>capital lifetime</from>
+                    <to>depreciation</to>
+                </connector>
+                <connector angle="-87.8532118870628">
+                    <from>capital</from>
+                    <to>depreciation</to>
+                </connector>
+                <connector angle="77.28648877800543">
+                    <from>capital</from>
+                    <to>growth goal</to>
+                </connector>
+                <connector angle="157.85481996177668">
+                    <from>growth goal</from>
+                    <to>investment</to>
+                </connector>
+                <connector angle="132.97626971443827">
+                    <from>profit</from>
+                    <to>investment</to>
+                </connector>
+                <aux name="price" x="532.5" y="473" label_side="right"></aux>
+                <connector angle="-55.63606651696057">
+                    <from>capital</from>
+                    <to>extraction</to>
+                </connector>
+                <connector angle="-74.41417793886603">
+                    <from>yield per unit capital</from>
+                    <to>extraction</to>
+                </connector>
+                <connector angle="118.49658858388486">
+                    <from>resource</from>
+                    <to>yield per unit capital</to>
+                </connector>
+                <connector angle="68.52030768837096">
+                    <from>price</from>
+                    <to>profit</to>
+                </connector>
+                <connector angle="68.38932885106419">
+                    <from>extraction</from>
+                    <to>profit</to>
+                </connector>
+                <connector angle="-103.8563427316131">
+                    <from>capital</from>
+                    <to>profit</to>
+                </connector>
+                <connector angle="126.83744026757645">
+                    <from>yield per unit capital</from>
+                    <to>price</to>
+                </connector>
+            </view>
+        </views>
+    </model>
+</xmile>
