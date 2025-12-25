@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE" xmlns:simlin="https://simlin.com/XMILE/v1.0">
+    <header>
+        <name>business-inventory</name>
+        <vendor>Simlin</vendor>
+        <product version="0.1.0" lang="en">Simlin</product>
+    </header>
+    <sim_specs method="euler">
+        <start>0</start>
+        <stop>150</stop>
+        <dt>1</dt>
+    </sim_specs>
+    <model>
+        <variables>
+            <stock name="inventory_of_cars_in_the_lot">
+                <eqn>200</eqn>
+                <inflow>deliveries</inflow>
+                <outflow>sales</outflow>
+            </stock>
+            <flow name="deliveries">
+                <eqn>IF TIME &lt;= 5 THEN 20 ELSE orders_to_factory_5_days_ago</eqn>
+            </flow>
+            <flow name="sales">
+                <eqn>MIN(customer_demand, inventory_of_cars_in_the_lot)</eqn>
+            </flow>
+            <aux name="desired_inventory">
+                <eqn>10 * perceived_sales</eqn>
+            </aux>
+            <aux name="discrepancy">
+                <eqn>desired_inventory - inventory_of_cars_in_the_lot</eqn>
+            </aux>
+            <aux name="orders_to_factory">
+                <eqn>MAX(0, discrepancy / response_delay + perceived_sales)</eqn>
+            </aux>
+            <aux name="perceived_sales">
+                <eqn>average_last_five_sales</eqn>
+            </aux>
+            <aux name="customer_demand">
+                <eqn>20 + STEP(2, 25) - STEP(4, 50)</eqn>
+            </aux>
+            <aux name="perception_delay">
+                <eqn>5</eqn>
+            </aux>
+            <aux name="response_delay">
+                <eqn>5</eqn>
+            </aux>
+            <aux name="orders_to_factory_5_days_ago">
+                <eqn>PREVIOUS(PREVIOUS(PREVIOUS(PREVIOUS(PREVIOUS(orders_to_factory)))))</eqn>
+            </aux>
+            <aux name="average_last_five_sales">
+                <eqn>SMTH1(sales, perception_delay)</eqn>
+                <doc>MEAN(sales,
+    PREVIOUS(sales),
+    PREVIOUS(PREVIOUS(sales)),
+    PREVIOUS(PREVIOUS(PREVIOUS(sales))),
+    PREVIOUS(PREVIOUS(PREVIOUS(PREVIOUS(sales))))
+)</doc>
+            </aux>
+            <aux name="average_last_2_sales">
+                <eqn>0</eqn>
+            </aux>
+        </variables>
+        <views>
+            <view isee:show_pages="false" page_width="800" page_height="600" view_type="stock_flow">
+                <stock name="inventory of cars in the lot" x="667.1666666666667" y="377.83333333333337" label_side="bottom"></stock>
+                <flow name="deliveries" x="528.8333333333333" y="380.16666666666663" label_side="bottom">
+                    <pts>
+                        <pt x="390.5" y="380.16666666666663"></pt>
+                        <pt x="644.6666666666667" y="380.16666666666663"></pt>
+                    </pts>
+                </flow>
+                <flow name="sales" x="834.8333333333333" y="379.3333333333333" label_side="bottom">
+                    <pts>
+                        <pt x="689.6666666666667" y="379.3333333333333"></pt>
+                        <pt x="1002.5" y="379.3333333333333"></pt>
+                    </pts>
+                </flow>
+                <aux name="desired inventory" x="651.5" y="537" label_side="right"></aux>
+                <aux name="discrepancy" x="552" y="496.66666666666663" label_side="right"></aux>
+                <aux name="orders to factory" x="446.5" y="460.66666666666663" label_side="right"></aux>
+                <connector angle="115.10533460154929">
+                    <from>orders to factory</from>
+                    <to>orders to factory 5 days ago</to>
+                </connector>
+                <connector angle="-156.8426153776368">
+                    <from>discrepancy</from>
+                    <to>orders to factory</to>
+                </connector>
+                <connector angle="-162.5685599938485">
+                    <from>desired inventory</from>
+                    <to>discrepancy</to>
+                </connector>
+                <connector angle="-104.55160162030916">
+                    <from>inventory of cars in the lot</from>
+                    <to>discrepancy</to>
+                </connector>
+                <aux name="perceived sales" x="802.9999999999999" y="488.50000000000006" label_side="right"></aux>
+                <connector angle="-76.39970873323318">
+                    <from>sales</from>
+                    <to>average last five sales</to>
+                </connector>
+                <connector angle="-162.82840168747236">
+                    <from>perceived sales</from>
+                    <to>desired inventory</to>
+                </connector>
+                <connector angle="-94.07351829990512">
+                    <from>perceived sales</from>
+                    <to>orders to factory</to>
+                </connector>
+                <connector angle="-77.26500780762831">
+                    <from>inventory of cars in the lot</from>
+                    <to>sales</to>
+                </connector>
+                <aux name="customer demand" x="974.3333333333334" y="431.5" label_side="right"></aux>
+                <connector angle="-176.6728867957925">
+                    <from>customer demand</from>
+                    <to>sales</to>
+                </connector>
+                <aux name="perception delay" x="960.3333333333334" y="476.6666666666667" label_side="right"></aux>
+                <aux name="response delay" x="350.6666666666667" y="519.3333333333333" label_side="right"></aux>
+                <aux name="orders to factory 5 days ago" x="458" y="426.6666666666666" label_side="right"></aux>
+                <connector angle="46.57801168684239">
+                    <from>orders to factory 5 days ago</from>
+                    <to>deliveries</to>
+                </connector>
+                <connector angle="85.8020298438966">
+                    <from>response delay</from>
+                    <to>orders to factory</to>
+                </connector>
+                <aux name="average last five sales" x="822.3333333333333" y="445.66666666666663" label_side="right"></aux>
+                <connector angle="-86.61213341148692">
+                    <from>average last five sales</from>
+                    <to>perceived sales</to>
+                </connector>
+                <aux name="average last 2 sales" x="1151.6666666666667" y="506.33333333333326" label_side="right"></aux>
+                <connector angle="-166.23879100206818">
+                    <from>perception delay</from>
+                    <to>average last five sales</to>
+                </connector>
+            </view>
+        </views>
+    </model>
+</xmile>
